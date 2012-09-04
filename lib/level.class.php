@@ -168,7 +168,7 @@
 
         /**
         * Returns hints for the current amount of tries
-        * @return String Hints for the current tries
+        * @return string Hints for the current tries
         */
         public function get_hints(){
             if(!isset($this->hints) || is_null($this->hints)){
@@ -217,6 +217,11 @@
         }
 
 
+        /**
+        * Adds a comment to the current level by the user.
+        * @param User $user An optional other User instance to use
+        * @return bool true on success, else false
+        */
         public function add_comment($message, $user=null){
             if( is_null($user) ){
                $user = $this->user; 
