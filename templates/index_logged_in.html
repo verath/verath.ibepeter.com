@@ -1,0 +1,96 @@
+{extends file="index_base.html"}
+{block name=title}Pick a level{/block}
+{block name=styles}{strip}
+    <style type="text/css">
+        #levels {
+            width: 523px;
+            float: left;
+            clear: both;
+            margin-bottom: 10px;
+        }
+        #leaderboard{
+            width: 211px;
+            float: left;
+            margin-left: 30px;
+        }
+        #leaderboard h3{
+            margin-bottom: 0.5em;
+        }
+        #nextLevelText{
+            float: right;
+        }
+        #top20{
+            list-style: none;
+            padding-left: 10px;
+        }
+        .completedLevel{ 
+            color: rgb(60, 160, 60)!important;
+            transition: color 0.3s ease;
+            -webkit-transition: color 0.3s ease;
+            -moz-transition: color 0.3s ease;
+            -o-transition: color 0.3s ease;
+        }
+        .explainationLink{
+            float: right;
+        }
+        .explainationLink a{
+            color: rgb(60,60,60) !important;
+            transition: color 0.3s ease;
+            -webkit-transition: color 0.3s ease;
+            -moz-transition: color 0.3s ease;
+            -o-transition: color 0.3s ease;
+        }
+        h3.levelHeading:hover .explainationLink a{
+            color: rgb(0,0,0) !important;
+        }
+        h3.levelHeading:hover .completedLevel{
+            color: rgb(0, 100, 0)!important;
+        }
+        .nextLevel{
+            color: red !important;
+        }
+    </style>
+{/strip}{/block}
+{block name=content}{strip}
+    <h1>Level Index</h1>
+    <div id="levels" class="">
+        <div class="success">You are logged in as {$name|escape}.</div>
+        <div class="notice">
+            &lt;- <a href="/logout.php">Logout</a>
+            {if isset($next_level)}
+                <span id="nextLevelText"><a href="/levels/level{$next_level}">Proceed to Level {$next_level}!</a> -&gt;</span>
+            {/if}
+        </div>
+        <div class="notice">
+            <h2>Choose a level</h2>
+            <p>Click a level below to start hacking!</p>
+            
+            {if isset($completed_levels) && is_array($completed_levels)}
+                {foreach $completed_levels as $level}
+                    <h3 class="levelHeading">
+                        <a href="/levels/level{$level}" class="completedLevel">Level {$level}</a> 
+                        <span class="explainationLink"><a href="/levels/level{$level}/explained.php">Explaination &amp; Comments</a></span>
+                    </h3>
+                {/foreach}
+            {/if}
+
+            {if isset($next_level)}
+                <h3><a href="/levels/level{$next_level}"  class="nextLevel">Level {$next_level}</a></h3>
+            {/if}
+        </div>
+    </div>
+    <div id="leaderboard">
+        <div class="notice">
+            <h2>Stats</h2>
+            <h3>Top 20</h3>
+            <ul id="top20">
+                {foreach $leaderboard_users as $user}
+                    <li>{$user.level-1} / {$total_levels-1} - {$user.username}</li>
+                {/foreach}
+            </ul>
+            <h3>Average level</h3>
+            <p>Level {$average_level}</p>
+
+        </div>
+    </div>
+{/strip}{/block}

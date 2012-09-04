@@ -1,0 +1,14 @@
+{extends file="level_base.html"}
+
+{block name=styles}{/block}
+{block name=scripts}{/block}
+
+{block name=levelSubHeading}Prepare to die!{/block}
+
+{block name=levelArea}
+        <form action="" method="post">
+            <p>Password: <br /><input type="password" name="password" autocomplete="off" class="title" /></p>
+            <!-- This is your password (encrypted): {$levelPass nocache} -->
+            <p><input type="submit" value="Submit" /></p>
+        </form>
+{/block}

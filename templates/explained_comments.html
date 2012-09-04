@@ -1,0 +1,24 @@
+{strip}
+            {if $com_error} 
+                <div class="error">{$com_error|escape:'html'}</div>
+            {/if}
+            <h1>Comments</h1>
+             <form action="/addComment.php" method="post" id="messageForm"/>
+                <input type="hidden" name="secret" value="{$com_secret}" />
+                <input type="hidden" name="level" value="{$level}" />
+                <label>Add a comment:</label>
+                <textarea id="message" name="message" maxlength="300"></textarea>
+                <input type="submit" name="submit" value="Save Comment" />
+            </form>
+            {foreach from=$comments item=comment name=comments}
+                {if $smarty.foreach.comments.index % 2 != 0}
+                <div class="comment odd">
+                {else}
+                <div class="comment">
+                {/if}
+                    <span class="user">{$comment.username}</span> <span class="post_time small quiet">{$comment.post_time|relative_date}</span><br />
+                    {$comment.message|escape:'html'}
+                </div>
+            {/foreach}
+           
+{/strip}

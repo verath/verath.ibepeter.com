@@ -1,0 +1,22 @@
+{extends file="level_base.html"}
+
+{block name=styles}{/block}
+{block name=scripts}{/block}
+
+{block name=levelSubHeading}The JavaScript Challenge{/block}
+
+{block name=levelArea}
+        <script type="text/javascript">
+            function myOnLoad() {
+                pass=prompt("enter password");pass!="secretPassword"&&alert("wrong");
+            }
+        </script>
+        
+        <script src="text/javascript">
+            document.write("Javascript challenge");
+        </script>
+
+        <script type="text/javascript">
+        	document.body.onload=myOnLoad;
+        </script>
+{/block}

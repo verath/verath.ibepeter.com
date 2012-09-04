@@ -1,0 +1,21 @@
+{extends file="index_base.html"}
+{block name=title}Error 404 - Page Not Found{/block}
+{block name=content}{strip}
+    <style>
+        #errorContainer {
+            width: 523px;
+            float: none;
+            margin: 0 auto;
+            clear: both;
+            margin-bottom: 10px;
+        }
+    </style>
+    <div id="errorContainer">
+        <div class="error">
+            <h1>Error 404</h1>
+            <h2>Page Not Found</h2>
+            <p>Sorry, the page you were looking for could not be found on the server. Make sure you didn't misstype the URL.</p>
+            <p><a href="/">Return to the front-page</a></p>
+        </div>
+    </div>
+{/strip}{/block}

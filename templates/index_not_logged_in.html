@@ -1,0 +1,46 @@
+{extends file="index_base.html"}
+{block name=title}Home{/block}
+{block name=styles}{strip}
+    <style type="text/css">
+        #welcome, #error, #forced_logout{
+            width: 300px;
+        }
+    </style>
+{/strip}{/block}
+{block name=content}{strip}
+    <p>
+        Welcome to code name Verath (<acronym title="Don't blame me if something isn't working as it is supposed to">Beta</acronym>).
+    </p>
+    <p>
+        This (after you've logged in) is a hacking challenge. 
+        <br />It works much like the other "hack"-sites (like <a href="http://hackthis.co.uk">Hackthis.co.uk</a>, <a href="hackthissite.org">Hackthissite.org</a>), 
+        <br />but I've tried to focus more on the learning part of the challenges. 
+        <br />After each level there is a sum-up page describing the vulnerability in detail 
+        <br />and a comment page where you can ask questions about the level.
+    </p>
+    <p>
+        This site does not encourage illegal activity. I am NOT responsible for any of 
+        <br />your actions at this site or things you've learnd from this site!
+    </p>
+    <p>
+        Login below or register an account <a href="/register">here</a>
+    </p>
+
+    {if isset($forced_logout)}
+        <div id="forced_logout" class="notice">It appears like you changed computer, please login again.</div>
+    {/if}
+
+    {if isset($did_register)}
+        <div id="welcome" class="success">You made it! Now login below.</div>
+    {/if}
+
+    {if isset($error) && !empty($error)}
+        <!-- This div is for errors only. Do not enter! -->
+        <div id="error" class="error">{$error}</div>
+    {/if}
+    <form action="/" method="post">
+        <p>Username:<br /> <input type="text" class="title" name="username" value="" maxlength="30" autofocus="autofocus" /></p>
+        <p>Password:<br /> <input type="password" class="title" name="password" value="" /></p>            
+        <p><input type="submit" name="submit" value="Login" /></p>
+    </form>
+{/strip}{/block}

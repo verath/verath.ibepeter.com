@@ -1,0 +1,21 @@
+{extends file="index_base.html"}
+{block name=title}Error 500 - Internal Server Error{/block}
+{block name=content}{strip}
+    <style>
+        #errorContainer {
+            width: 523px;
+            float: none;
+            margin: 0 auto;
+            clear: both;
+            margin-bottom: 10px;
+        }
+    </style>
+    <div id="errorContainer">
+        <div class="error">
+            <h1>Error 500</h1>
+            <h2>Internal Server Error</h2>
+            <p>Sorry, but something on our side isn't working as it should. Please try again later.</p>
+            <p><a href="/">Return to the front-page</a></p>
+        </div>
+    </div>
+{/strip}{/block}

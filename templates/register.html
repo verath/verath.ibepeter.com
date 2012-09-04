@@ -1,0 +1,33 @@
+{extends file="index_base.html"}
+{block name=title}Register{/block}
+{block name=styles}{strip}
+    <style type="text/css">
+        #error{
+            width: 300px;
+        }
+    </style>
+{/strip}{/block}
+{block name=content}{strip}
+    <h1>Register</h1>
+    <p>Fill in the fields to register. They are all required.</p>
+    {if isset($error) && !empty($error)}
+        <!-- This div is for errors only. Do not enter! -->
+        <div id="error" class="error">{$error}</div>
+    {/if}
+    <form action="" method="post">
+        <p>Username:<br /> 
+            <input type="text" class="title" name="username" value="" maxlength="30" />
+        </p>
+        <p>Password:<br /> 
+            <input type="password" class="title" name="password" value="" />
+        </p>
+        <p>Password Again:<br />
+            <input type="password" class="title" name="password2" value="" />
+        </p>
+        <input type="text" name="email" value="" style="position: absolute; left: -400px;"/>
+        <p>
+            <input type="submit" name="submit" value="Register" />
+        </p>
+    </form>
+    <p><a href="/">Back</a></p>
+{/strip}{/block}
