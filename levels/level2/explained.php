@@ -21,17 +21,17 @@
     <p><input type="submit" value="Submit" /></p>
 </form>';
 
-    $smarty -> assign('level', $level->get_level());
-    $smarty -> assign('completed', isset($_GET['completed']));
-    $smarty -> assign('src_settings', 'brush: xml highlight: [3]');
-    $smarty -> assign('vuln_type', 'Exposed password');
-    $smarty -> assign('vuln_how', 'Much like the first level. The password is readable (even though it is "encrypted").');
-    $smarty -> assign('vuln_fix', 'Don\'t write passwords in the source code. Ever! Not even encrypted.');
-    $smarty -> assign('src', htmlentities($src) );
+    $smarty->assign('level', $level->get_level());
+    $smarty->assign('completed', isset($_GET['completed']));
+    $smarty->assign('src_settings', 'brush: xml highlight: [3]');
+    $smarty->assign('vuln_type', 'Exposed password');
+    $smarty->assign('vuln_how', 'Much like the first level. The password is readable (even though it is "encrypted").');
+    $smarty->assign('vuln_fix', 'Don\'t write passwords in the source code. Ever! Not even encrypted.');
+    $smarty->assign('src', htmlentities($src) );
     
-    $smarty -> assign('comments', $level->get_comments() );
-    $smarty -> assign('com_secret', $level->get_comments_secret() );
-    $smarty -> assign('com_error', isset($_GET['error']) ? $_GET['error'] : false);
+    $smarty->assign('comments', $level->get_comments() );
+    $smarty->assign('com_secret', $level->get_comments_secret() );
+    $smarty->assign('com_error', isset($_GET['error']) ? $_GET['error'] : false);
     
     if(isset($_GET['completed'])){
         $smarty->display('explained.html', $level .'_completed');

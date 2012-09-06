@@ -24,17 +24,17 @@ function login(){
     }
 }';
 
-    $smarty -> assign('level', $level->get_level());
-    $smarty -> assign('completed', isset($_GET['completed'] ));
-    $smarty -> assign('src_settings', 'brush: php highlight: [2]');
-    $smarty -> assign('vuln_type', 'Trusting client supplied data');
-    $smarty -> assign('vuln_how', 'Trusting the user agent string. Allowing a bot to crawl your page without signing in.');
-    $smarty -> assign('vuln_fix', 'Always validate the bot by ip (<a href="http://www.google.com/support/webmasters/bin/answer.py?answer=80553">How to validate Googlebot</a>)');
-    $smarty -> assign('src', htmlentities($src) );
+    $smarty->assign('level', $level->get_level());
+    $smarty->assign('completed', isset($_GET['completed'] ));
+    $smarty->assign('src_settings', 'brush: php highlight: [2]');
+    $smarty->assign('vuln_type', 'Trusting client supplied data');
+    $smarty->assign('vuln_how', 'Trusting the user agent string. Allowing a bot to crawl your page without signing in.');
+    $smarty->assign('vuln_fix', 'Always validate the bot by ip (<a href="http://www.google.com/support/webmasters/bin/answer.py?answer=80553">How to validate Googlebot</a>)');
+    $smarty->assign('src', htmlentities($src) );
     
-    $smarty -> assign('comments', $level->get_comments() );
-    $smarty -> assign('com_secret', $level->get_comments_secret() );
-    $smarty -> assign('com_error', isset($_GET['error']) ? $_GET['error'] : false);
+    $smarty->assign('comments', $level->get_comments() );
+    $smarty->assign('com_secret', $level->get_comments_secret() );
+    $smarty->assign('com_error', isset($_GET['error']) ? $_GET['error'] : false);
     
     if(isset($_GET['completed'])){
         $smarty->display('explained.html', $level->get_level() .'_completed');

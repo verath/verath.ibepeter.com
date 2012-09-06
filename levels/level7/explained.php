@@ -28,17 +28,17 @@
 	<input type="hidden" name="ref" value="<?=$_GET[\'ref\']?>" />
 </form>';
 
-    $smarty -> assign('level', $level->get_level());
-    $smarty -> assign('completed', isset($_GET['completed'] ));
-    $smarty -> assign('src_settings', 'brush: php highlight: [11]');
-    $smarty -> assign('vuln_type', 'Trusting client supplied data');
-    $smarty -> assign('vuln_how', 'Not validating a variable that can be modified by the user to run scripts crafted by the user.');
-    $smarty -> assign('vuln_fix', 'Always use <a href="http://www.php.net/manual/en/function.filter-input.php">filter_input</a> (for PHP) on any variables that could have been modified by the user.');
-    $smarty -> assign('src', htmlentities($src) );
+    $smarty->assign('level', $level->get_level());
+    $smarty->assign('completed', isset($_GET['completed'] ));
+    $smarty->assign('src_settings', 'brush: php highlight: [11]');
+    $smarty->assign('vuln_type', 'Trusting client supplied data');
+    $smarty->assign('vuln_how', 'Not validating a variable that can be modified by the user to run scripts crafted by the user.');
+    $smarty->assign('vuln_fix', 'Always use <a href="http://www.php.net/manual/en/function.filter-input.php">filter_input</a> (for PHP) on any variables that could have been modified by the user.');
+    $smarty->assign('src', htmlentities($src) );
     
-    $smarty -> assign('comments', $level->get_comments() );
-    $smarty -> assign('com_secret', $level->get_comments_secret() );
-    $smarty -> assign('com_error', isset($_GET['error']) ? $_GET['error'] : false);
+    $smarty->assign('comments', $level->get_comments() );
+    $smarty->assign('com_secret', $level->get_comments_secret() );
+    $smarty->assign('com_error', isset($_GET['error']) ? $_GET['error'] : false);
     
     if(isset($_GET['completed'])){
         $smarty->display('explained.html', $level->get_level() .'_completed');
