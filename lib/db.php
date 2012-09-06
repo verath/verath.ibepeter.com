@@ -2,12 +2,9 @@
     require_once('config.php');
     require_once('sensitive.class.php');
 
-
-    global $PRODUCTION, $DEBUG;
-
     global $pdo;
 
-    if( $PRODUCTION ){
+    if( IS_PRODUCTION ){
         $dsn = Sensitive::$db_prod_dsn;
         $user = Sensitive::$db_prod_user;
         $password = Sensitive::$db_prod_password;
@@ -28,7 +25,7 @@
     
     $pdo->exec('SET CHARACTER SET utf8');
 
-    if( $DEBUG ){
+    if( SHOW_DEBUG ){
         $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_WARNING);
     } else {
         $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_SILENT);

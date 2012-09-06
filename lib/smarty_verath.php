@@ -6,11 +6,10 @@
     class Smarty_Verath extends Smarty {
 
         function __construct(){
-            global $PRODUCTION;
             
             parent::__construct();
 
-            if( $PRODUCTION ){
+            if( IS_PRODUCTION ){
                 $this->setTemplateDir(array(
                     'main' => Sensitive::$smarty_prod_data_dir . '/templates',
                     'levels' => Sensitive::$smarty_prod_data_dir . '/templates/levels'

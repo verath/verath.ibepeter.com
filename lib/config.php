@@ -1,14 +1,15 @@
 <?php
+
+    define('SHOW_DEBUG', false);
+    define('IS_PRODUCTION', true);
+
     if( isset($_SERVER['IS_ON_LOCAL']) && $_SERVER['IS_ON_LOCAL'] === 'TRUE' ){
         // On local machine, SetEnv varname "variable value" in apache config.
-        $DEBUG = true;
-        $PRODUCTION = false;
-    } else {
-        $DEBUG = false;
-        $PRODUCTION = true;
+        define('SHOW_DEBUG', true);
+        define('IS_PRODUCTION', false);
     }
 
-    if( $DEBUG ) {
+    if( SHOW_DEBUG ) {
         // Full error reporting
         error_reporting(-1);
     } else {
