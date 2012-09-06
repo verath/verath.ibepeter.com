@@ -144,7 +144,7 @@
                     WHERE `username` = :username';
 
             $stmt = $this->pdo->prepare( $sql );
-            $stmt->bindParam(¨':username', $username, PDO::PARAM_STR );
+            $stmt->bindParam( ':username', $username, PDO::PARAM_STR );
 
             if( !$stmt->execute() ){
                 return 'DB error, please try again later';
