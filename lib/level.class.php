@@ -3,24 +3,60 @@
     require_once('config.php');
 
     class Level{
+        /**
+         * The level number
+         * @var int
+         */
         private $level;
+
+        /**
+         * The number of tries user has done this
+         * session.
+         * @var int
+         */
         private $num_tries;
+
+        /**
+         * An array mapping number of tries to
+         * a hint.
+         * @var array
+         */
         private $hints;
+
+        /**
+         * The password for the level, generated on 
+         * a per session basis.
+         * @var string
+         */
         private $password;
+
+        /**
+         * A user instance
+         * @var User
+         */
         private $user;
 
-        public static $num_levels = 8;
-
+        /**
+         * A pdo instance
+         * @var PDO
+         */
         private $pdo;
 
         /**
-        * Initiates the level
-        * @param int $level The current level
-        * @param User The current user
-        * @param array $hints An array with hints, numTries=>Hint
-        * @param string $level_password If set, this password is used for the level
-        * @return Level for chaining
-        */
+         * The total number of levels.
+         * @var int
+         */
+        public static final $num_levels = 8;
+
+
+        /**
+         * Initiates the Level
+         * @param int $level The level number
+         * @param User The current user
+         * @param array $hints An array with hints, numTries=>hint
+         * @param string $level_password If set, this password is used for the level
+         * @return Level for chaining
+         */
         function __construct($level, $user, $hints=null, $level_password=null){
             // Grab the pdo class
             global $pdo;
@@ -46,25 +82,27 @@
 
 
         /**
-        * Returns the current level as a string
-        */
+         * Returns the current level as a string
+         */
         public function __toString(){
             return (string)$this->get_level();
         }
 
 
         /**
-        * Returns the current level number
-        * @return int The level number
-        */
+         * Returns the current level number
+         * @return int The level number
+         */
         public function get_level(){
             return $this->level;
         }
 
 
-        /*
-        * Generates a password, a-Z
-        */
+        /**
+         * Generates a password, a-Z
+         * @param int $len Length of the password.
+         * @return string A password of lenght $len.
+         */
         private function generate_password( $len = 7 ){
             $r = '';
             for($i=0; $i<$len; $i++){
@@ -75,9 +113,9 @@
 
 
         /**
-        * Generates a password for the current level and saves it in
-        * the session.
-        */
+         * Generates a password for the current level and saves it in
+         * the session.
+         */
         private function generate_level_password(){
             if( !isset($this->password) ){
                 if( !isset($_SESSION['levelPass']) ){
@@ -94,9 +132,9 @@
 
 
         /**
-        * Returns the password for the current level
-        * @return string The level password
-        */
+         * Returns the password for the current level
+         * @return string The level password
+         */
         public function get_password(){
             if( !isset($this->password) ){
                 $this->generate_level_password();
@@ -106,10 +144,10 @@
 
 
         /**
-        * Compares a password to the level password
-        * @param string The password to check against
-        * @return bool True if they match, else false
-        */
+         * Compares a password to the level password
+         * @param string The password to check against
+         * @return bool True if they match, else false
+         */
         public function check_password($password){
             if( isset($this->password) ){
                 return ($password === $this->password);
@@ -121,9 +159,9 @@
 
 
         /**
-        * Gets the number of tries for the current level
-        * @return int Number of tries
-        */
+         * Gets the number of tries for the current level
+         * @return int Number of tries
+         */
         private function get_tries(){
             if( !isset($this->num_tries) ){
                 if( !isset($_SESSION['levelTries']) ){
@@ -142,9 +180,9 @@
 
 
         /**
-        * Adds one to the current try/session/level
-        * @return Level Used for chaining
-        */
+         * Adds one to the current try/session/level
+         * @return Level Used for chaining
+         */
         public function add_try(){
             $this->num_tries = $this->get_tries()+1;
             $_SESSION['levelTries'][$this->level] = $this->num_tries;
@@ -153,10 +191,10 @@
 
 
         /**
-        * Sets the hints to be used with the level
-        * @param array An array of hints, key is num tries
-        * @return Level Used for chaining
-        */
+         * Sets the hints to be used with the level
+         * @param array An array of hints, key is num tries
+         * @return Level Used for chaining
+         */
         public function set_hints($hints){
             if( is_array($hints) ){
                 $this->hints = $hints;
@@ -167,16 +205,16 @@
 
 
         /**
-        * Returns hints for the current amount of tries
-        * @return string Hints for the current tries
-        */
+         * Returns hints for the current amount of tries
+         * @return string Hints for the current tries
+         */
         public function get_hints(){
-            if(!isset($this->hints) || is_null($this->hints)){
+            if( !isset($this->hints) || is_null($this->hints) ) {
                 return '';
             }
             
             $hint_str = '';
-            foreach ($this->hints as $tries => $hint) {
+            foreach( $this->hints as $tries => $hint ) {
                 if( $this->get_tries() > $tries ){
                     $hint_str .= $hint . "\n";
                 }
@@ -186,12 +224,16 @@
 
 
         /**
-        * Returns an array of comments for the current level
-        * @return array Comments for the level
-        */
+         * Returns an array of comments for the current level
+         * @return array Comments for the level
+         */
         public function get_comments(){
-            $sql = 'SELECT `message`, `username`, `post_time` FROM `comments`
-                    WHERE `level` = :level ORDER BY `post_time` DESC LIMIT 0, 14';
+            $sql = 'SELECT `message`, `username`, `post_time`
+                    FROM `comments`
+                    WHERE `level` = :level 
+                    ORDER BY `post_time` 
+                    DESC LIMIT 0, 14';
+            
             $stmt = $this->pdo->prepare( $sql );
             $stmt->bindParam( ':level', $this->level, PDO::PARAM_INT );
             
@@ -205,10 +247,10 @@
 
 
         /**
-        * Returns a string used to validate a user
-        * @param User $user An optional other User instance to use
-        * @return string Secret string
-        */
+         * Returns a string used to validate a user
+         * @param User $user An optional other User instance to use
+         * @return string Secret string
+         */
         public function get_comments_secret($user=null){
             if( is_null($user) ){
                $user = $this->user; 
@@ -218,10 +260,10 @@
 
 
         /**
-        * Adds a comment to the current level by the user.
-        * @param User $user An optional other User instance to use
-        * @return bool true on success, else false
-        */
+         * Adds a comment to the current level by the user.
+         * @param User $user An optional other User instance to use
+         * @return bool true on success, else false
+         */
         public function add_comment($message, $user=null){
             if( is_null($user) ){
                $user = $this->user; 
@@ -244,10 +286,10 @@
 
 
         /**
-        * Complets the level for the user
-        * @param User $user An optional other User instance to use
-        * @return bool true if success, else false
-        */
+         * Complets the level for the user
+         * @param User $user An optional other User instance to use
+         * @return bool true if success, else false
+         */
         public function complete($user=null){
             if( is_null($user) ){
                $user = $this->user; 
@@ -257,10 +299,10 @@
 
 
         /**
-        * Checks if the user has access to the current level
-        * @param User $user An optional other User instance to use
-        * @return bool true if allowed, else false
-        */
+         * Checks if the user has access to the current level
+         * @param User $user An optional other User instance to use
+         * @return bool true if allowed, else false
+         */
         public function user_has_access($user=null){
             if( is_null($user) ){
                $user = $this->user; 
@@ -270,10 +312,10 @@
 
 
         /**
-        * Checks if the user has completed the level already
-        * @param User $user An optional other User instance to use
-        * @return bool true if allowed, else false
-        */
+         * Checks if the user has completed the level already
+         * @param User $user An optional other User instance to use
+         * @return bool true if allowed, else false
+         */
         public function user_done_level($user=null){
             if( is_null($user) ){
                $user = $this->user; 

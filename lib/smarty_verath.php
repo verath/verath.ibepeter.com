@@ -1,17 +1,13 @@
 <?php
-    // load Smarty library
     require_once('Smarty/Smarty.class.php');
     require_once('config.php');
     require_once('sensitive.class.php');
-
 
     class Smarty_Verath extends Smarty {
 
         function __construct(){
             global $PRODUCTION;
-            // Class Constructor.
-            // These automatically get set with each new instance.
-
+            
             parent::__construct();
 
             if( $PRODUCTION ){
