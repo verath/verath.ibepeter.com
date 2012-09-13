@@ -103,7 +103,7 @@
          * @param int $len Length of the password.
          * @return string A password of lenght $len.
          */
-        private function generate_password( $len = 7 ){
+        public static function generate_password( $len = 7 ){
             $r = '';
             for($i=0; $i<$len; $i++){
                 $r .= chr( (rand(0, 1) ? ord('A') : ord('a')) + rand(0, 25) );
