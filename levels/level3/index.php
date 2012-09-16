@@ -6,7 +6,7 @@
     $user = new User();
     $hints = array( 
         3 => 'Headers.', 
-        6 => 'The HTTP header you need to change can be hidden in HTML5 with rel="noreferrer".'
+        6 => 'The HTTP header you need to change can be hidden in HTML5 with rel="noreferrer".',
         9 => 'One way to change the header is using the addon TamperData for Firefox.'
     );
     $level = new Level(3, $user, $hints, 'REkaOlQ');
