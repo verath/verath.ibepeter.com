@@ -10,7 +10,7 @@
     );
     $level = new Level(4, $user, $hints);
     
-    if( !$level->user_has_access() ){
+    if( !$user->has_access_to_level(3) ){
         die('You are not ready. Meet Yoda you must. <a href="/">Home</a>');
     }
     
