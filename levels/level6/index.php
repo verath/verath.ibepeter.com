@@ -5,8 +5,8 @@
     
     $user = new User();
     $hints = array( 
-        10  => 'Something you can eat.',
-        20  => 'Cookies!'
+        3  => 'Something you can eat.',
+        7  => 'Cookies!'
     );
     $level = new Level(6, $user, $hints);
     

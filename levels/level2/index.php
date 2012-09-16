@@ -5,9 +5,9 @@
     
     $user = new User();
     $hints = array( 
-        3  => 'It is not actually "encrypted".', 
-        10 => 'The algorithm is know for using equals sign (=) as padding.',
-        20 => 'The encoding is commonly used to encode binary data that need to be stored and transferred.'
+        2  => 'It is not actually "encrypted".', 
+        5 => 'The algorithm is know for using equals sign (=) as padding.',
+        9 => 'The encoding is commonly used to encode binary data that need to be stored and transferred.'
     );
     $level = new Level(2, $user, $hints);
     

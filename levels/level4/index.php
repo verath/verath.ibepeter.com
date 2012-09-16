@@ -5,8 +5,8 @@
     
     $user = new User();
     $hints = array( 
-        5  => 'Look closer.', 
-        15 => 'Use the resources tab in the developer tools.'
+        3  => 'Look closer.', 
+        6 => 'Use the resources tab in the developer tools.'
     );
     $level = new Level(4, $user, $hints);
     

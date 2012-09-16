@@ -5,8 +5,8 @@
     
     $user = new User();
     $hints = array( 
-        10  => 'Headers. Again.',
-        20  => 'How does a bot crawl the page witouth signing in?'
+        3  => 'Headers. Again.',
+        6  => 'How does a bot crawl the page witouth signing in?'
     );
     $level = new Level(5, $user, $hints);
     
