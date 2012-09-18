@@ -46,7 +46,7 @@
          * The total number of levels.
          * @var int
          */
-        public static $num_levels = 8;
+        public static $num_levels = 7;
 
 
         /**

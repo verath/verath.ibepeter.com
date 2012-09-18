@@ -61,9 +61,11 @@
                 <span id="nextLevelText"><a href="/levels/level{$next_level}">Proceed to Level {$next_level}!</a> -&gt;</span>
             {/if}
         </div>
-        <div class="notice">
-            If you are interested, the source code for this site is now available on <a href="https://github.com/verath/verath.ibepeter.com" target="_blank">github</a>.
-        </div> 
+        {if !isset($next_level)}
+            <div class="notice">
+                If you are interested, the source code for this site is now available on <a href="https://github.com/verath/verath.ibepeter.com" target="_blank">github</a>.
+            </div> 
+        {/if}
         <div class="notice">
             <h2>Choose a level</h2>
             <p>Click a level below to start hacking!</p>
@@ -88,7 +90,7 @@
             <h3>Top 20</h3>
             <ul id="top20">
                 {foreach $leaderboard_users as $user}
-                    <li>{$user.level-1} / {$total_levels-1} - {$user.username}</li>
+                    <li>{$user.level-1} / {$total_levels} - {$user.username}</li>
                 {/foreach}
             </ul>
             <h3>Average level</h3>
