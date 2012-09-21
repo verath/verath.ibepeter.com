@@ -136,8 +136,8 @@
          * 
          * The test is done by looking at the number
          * of completed levels the user has. Every
-         * 2nd completion grants access to three more levels.
-         * 0-1 => access to 1-3, 2-3 => access to 1-6...
+         * 2nd completion grants access to two more levels.
+         * 0-1 => access to 1-3, 2-3 => access to 1-5...
          * 
          * @param int $levelId The id of the level.
          * @return bool
@@ -146,7 +146,7 @@
             if( !is_array($this->levels_done) && !$this->fetchCompletedLevels() ){
                 return false;
             }
-            $maxAllowedLevel = ceil( (count($this->levels_done) + 1) / 2) * 3;
+            $maxAllowedLevel = ceil((count($this->levels_done)+1) / 2) * 2 + 1;
             return ($maxAllowedLevel >= $levelId);
         }
 
@@ -189,13 +189,13 @@
          * @return bool true on success.
          */
         public function register( $name, $password ){
-            $password = $this->get_password_hash($password, $username);
+            $password = $this->getPasswordHash($name, $password);
 
             $sql = 'INSERT INTO `users` (`username`, `password`, `registered_at`)
                     VALUES (:username, :password, NOW())';
 
             $stmt = $this->pdo->prepare( $sql );
-            $stmt->bindParam( ':username', $username, PDO::PARAM_STR );
+            $stmt->bindParam( ':username', $name, PDO::PARAM_STR );
             $stmt->bindParam( ':password', $password, PDO::PARAM_STR );
 
             return $stmt->execute();

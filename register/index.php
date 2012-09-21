@@ -1,9 +1,13 @@
 <?php
-    require_once('../lib/user.class.php');
+    require_once('../lib/db.php');
+    require_once('../lib/User/sessionUser.class.php');
+    require_once('../lib/User/userUtil.class.php');
     require_once('../lib/smarty_verath.php');
     
     function register(){
-        $user = new User();
+        global $pdo;
+
+        $user = new SessionUser( $pdo );
 
         // is bot-field filled?
         if( !isset($_POST['email']) || $_POST['email'] !== ''){
@@ -20,10 +24,20 @@
         $password = $_POST['password'];
         $password_confirm = $_POST['password2'];
         
-        $register_status = $user->register($username, $password, $password_confirm);
+        // Validate
+        $passValidStatus = UserUtil::validatePassword( $password, $password_confirm );
+        if( $passValidStatus !== true ) {
+            return $passValidStatus;
+        }
 
-        if( $register_status !== true ){
-            return $register_status;
+        $nameValidStatus = UserUtil::validateUsername( $pdo, $username );
+        if( $nameValidStatus !== true ) {
+            return $nameValidStatus;
+        }
+
+        // Insert
+        if( !$user->register($username, $password) ){
+            return 'Database error, please try again later. Sorry for the inconvenience.';
         }
 
         $user->login($username, $password);

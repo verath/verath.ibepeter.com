@@ -52,8 +52,58 @@
                 return $result[0];
             } else {
                 return 0;
+            } 
+        }
+
+        /**
+         * Validates a password.
+         * 
+         * @param string $password
+         * @param string $password_confirm 
+         * @return mixed true on success, else an error message
+         */
+        public static function validatePassword($password, $password_confirm){
+            if( $password !== $password_confirm ){
+                return 'The passwords didn\'t match';
             }
-            
+            if( strlen($password) < 4 ){
+                return 'Password must be > 4 chars';
+            }
+            return true;
+        }
+
+        /**
+         * Validates a username.
+         * 
+         * @param PDO the pdo instance to run the query on.
+         * @param string $username
+         * @return mixed true on success, else an error message
+         */
+        public static function validateUsername( $pdo, $username ){
+            if( strlen($username) > 30 ){
+                return 'Username must be <= 30 chars';
+            }
+            if( strlen($username) < 1 ){
+                return 'Username must be >= 1 char';
+            }
+            if( !preg_match('/^[a-z0-9_]+$/i', $username) ){
+                return 'Username must only contain a-Z, 0-9 and _';
+            }
+
+            $sql = 'SELECT 1 
+                    FROM `users` 
+                    WHERE `username` = :username';
+
+            $stmt = $pdo->prepare( $sql );
+            $stmt->bindParam( ':username', $username, PDO::PARAM_STR );
+
+            if( !$stmt->execute() ){
+                return 'DB error, please try again later';
+            }
+            if( $stmt->rowCount() !== 0 ){
+                return 'That username already exist';
+            }
+            return true;
         }
     }
 
