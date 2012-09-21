@@ -4,11 +4,22 @@
     class SessionUser extends DatabaseUser {
         private $pdo;
 
+        /**
+         * Keys that needs to be in every session for 
+         * the session to be valid.
+         */
         private $SESSION_KEYS_USED = array(
             'userId',
             'userIp'
         );
 
+         /** 
+         * SessionUser constructor. Sets default values and
+         * the pdo instance to use. Also starts the session if
+         * it is not started already.
+         * 
+         * @param PDO $pdo The PDO instance to use for DB queries.
+         */
         public function __construct( $pdo ) {
             parent::__construct( $pdo );
 
@@ -21,7 +32,9 @@
 
         /**
          * Regenerates the user's session_id to prevent session
-         * hijacking.
+         * hijacking. The value is then stored in the database
+         * for comparison later.
+         * 
          * @return bool true if success, else false
          */
         private function regenerateSessionId(){
@@ -43,11 +56,25 @@
             return $stmt->execute();
         }
 
+        /**
+         * Compares a users IP to the one stored in the session
+         * cookie. This is to prevent others from hijacking.
+         *
+         * @return bool If the IPs match.
+         */
         private function checkIp(){
             if( !$this->isAuth() ){ return false; }
             return ( $_SESSION['userIp'] == $_SERVER['REMOTE_ADDR'] );
         }
 
+        /**
+         * Compares a users session ID to the one stored
+         * in the database. This is done to prevent multiple
+         * logins to the same account, and also to make sure
+         * every session is terminated if the user loggs out.
+         *
+         * @return bool True if session IDs match.
+         */
         private function checkSessionId(){
             if( !$this->isAuth() ){ return false; }
 
@@ -66,6 +93,14 @@
             return ($stmt->execute() && $stmt->rowCount() == 1 );
         }
 
+        /**
+         * Attempts to log a user in with the provided user name 
+         * and password. If the login is successful the id is stored
+         * in the session variable, and the sessionId is regenerated
+         * to prevent XSS.
+         * 
+         * @return bool True if the user was logged in.
+         */
         public function login( $name, $password ) {
             if( parent::login($name, $password) ) {
                 $_SESSION['userId'] = parent::getId();
@@ -77,6 +112,14 @@
             }
         }
 
+        /**
+         * Attempts to authenticate a user by looking at the userId
+         * saved from the login. Also fetches data for the user from
+         * the DB if the authentication was successful.
+         *
+         * @return bool True if the user could be validated and data
+         *              was fetched.
+         */
         public function auth(){
             if( !isset($_SESSION) || !isset($_SESSION['userId']) ) {
                 return false;
@@ -87,6 +130,11 @@
             }
         }
 
+        /**
+         * Checks to see if the user is authenticated.
+         *
+         * @return bool True if the user is authenticated.
+         */
         public function isAuth( ) {
             if( parent::getName() == null || parent::getId() == -1 ) {
                 return false;
@@ -103,6 +151,13 @@
             }
         }
 
+        /**
+         * Logs a user out. Removes the session from both the
+         * client and the DB and un-sets all values attached to
+         * the current user instance.
+         *
+         * @return bool True if logout was successful.
+         */
         public function logout( ) {
             if( ini_get("session.use_cookies") ) {
                 $params = session_get_cookie_params();

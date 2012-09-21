@@ -51,6 +51,7 @@
         /**
          * Quieries the database for all levels the user
          * has completed already.
+         *
          * @return bool true if the value could be fetched.
          */
         private function fetchCompletedLevels(){
@@ -152,7 +153,7 @@
 
         /**
          * Completes a level for a user. Returns true
-         * if it was added succesfully or if the user
+         * if it was added successfully or if the user
          * had already completed the level.
          * 
          * @param int $levelId The id of the level.
@@ -182,8 +183,9 @@
         }
 
         /**
-         * Adds a new user to the table
-         * @param string $username
+         * Adds a new user to the table.
+         *
+         * @param string $name
          * @param string $password 
          * @return bool true on success.
          */
@@ -211,6 +213,7 @@
 
         /**
          * Getter for the id of the user.
+         *
          * @return string
          */
         public function getId() {
@@ -247,6 +250,9 @@
             }
         }
 
+        /**
+         * Un-sets all our fetched data for the current user.
+         */
         public function logout() {
             $this->name         = null;
             $this->id           = -1;
