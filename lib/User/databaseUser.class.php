@@ -1,6 +1,5 @@
 <?php
     require_once('user.interface.php');
-    require_once('../sensitive.class.php');
 
     abstract class DatabaseUser implements User {
         private $pdo;

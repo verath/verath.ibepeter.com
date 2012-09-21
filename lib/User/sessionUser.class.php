@@ -57,7 +57,7 @@
         }
 
         /**
-         * Compares a users IP to the one stored in the session
+         * Compares a user's IP to the one stored in the session
          * cookie. This is to prevent others from hijacking.
          *
          * @return bool If the IPs match.
@@ -68,7 +68,7 @@
         }
 
         /**
-         * Compares a users session ID to the one stored
+         * Compares a user's session ID to the one stored
          * in the database. This is done to prevent multiple
          * logins to the same account, and also to make sure
          * every session is terminated if the user loggs out.

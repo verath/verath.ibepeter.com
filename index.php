@@ -1,7 +1,8 @@
 <?php
-    require_once('lib/user.class.php');
+    require_once('lib/db.php');
+    require_once('lib/User/sessionUser.class.php');
 
-    $user = new User();
+    $user = new SessionUser( $pdo );
     $login_error = '';
 
     if( isset($_POST['submit']) ){
@@ -18,7 +19,7 @@
 
     
 
-    if( $user->is_auth() ){
+    if( $user->auth() ){
         Header( "HTTP/1.1 303 See Other" ); 
         Header( "Location: /levels" ); 
         die();

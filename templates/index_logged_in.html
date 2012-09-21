@@ -57,31 +57,39 @@
         <div class="success">You are logged in as {$name|escape}.</div>
         <div class="notice">
             &lt;- <a href="/logout.php">Logout</a>
-            {if isset($next_level)}
-                <span id="nextLevelText"><a href="/levels/level{$next_level}">Proceed to Level {$next_level}!</a> -&gt;</span>
-            {/if}
         </div>
-        {if !isset($next_level)}
-            <div class="notice">
-                If you are interested, the source code for this site is now available on <a href="https://github.com/verath/verath.ibepeter.com" target="_blank">github</a>.
-            </div> 
-        {/if}
+        <div class="notice">
+            If you are interested, the source code for this site is now available on
+            <a href="https://github.com/verath/verath.ibepeter.com" target="_blank">github</a>.
+        </div> 
         <div class="notice">
             <h2>Choose a level</h2>
             <p>Click a level below to start hacking!</p>
             
-            {if isset($completed_levels) && is_array($completed_levels)}
-                {foreach $completed_levels as $level}
+            {foreach $levels_status as $level}
+                {if $level.completed}
                     <h3 class="levelHeading">
-                        <a href="/levels/level{$level}" class="completedLevel">Level {$level}</a> 
-                        <span class="explainationLink"><a href="/levels/level{$level}/explained.php">Explaination &amp; Comments</a></span>
+                        <a href="/levels/level{$level.id}" class="completedLevel">
+                            Level {$level.id}
+                        </a> 
+                        <span class="explainationLink">
+                            <a href="/levels/level{$level.id}/explained.php">
+                                Explaination &amp; Comments
+                            </a>
+                        </span>
                     </h3>
-                {/foreach}
-            {/if}
-
-            {if isset($next_level)}
-                <h3><a href="/levels/level{$next_level}"  class="nextLevel">Level {$next_level}</a></h3>
-            {/if}
+                {elseif $level.hasAccess}
+                    <h3>
+                        <a href="/levels/level{$level.id}" class="nextLevel">
+                            Level {$level.id}
+                        </a>
+                    </h3>
+                {else}
+                    <h3>
+                        Level {$level.id}
+                    </h3>
+                {/if}
+            {/foreach}
         </div>
     </div>
     <div id="leaderboard">
@@ -90,11 +98,11 @@
             <h3>Top 20</h3>
             <ul id="top20">
                 {foreach $leaderboard_users as $user}
-                    <li>{$user.level-1} / {$total_levels} - {$user.username}</li>
+                    <li>{$user.level} / {$total_levels} - {$user.username}</li>
                 {/foreach}
             </ul>
-            <h3>Average level</h3>
-            <p>Level {$average_level}</p>
+            <h3>Average levels completed</h3>
+            <p>{$average_level} level(s) per user.</p>
 
         </div>
     </div>
