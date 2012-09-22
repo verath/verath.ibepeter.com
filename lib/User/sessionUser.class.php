@@ -103,7 +103,7 @@
          */
         public function login( $name, $password ) {
             if( parent::login($name, $password) ) {
-                $_SESSION['userId'] = parent::getId();
+                $_SESSION['userId'] = $this->getId();
                 // Save the ip of the user in the session, anti-xss
                 $_SESSION['userIp'] = $_SERVER['REMOTE_ADDR'];
                 return $this->regenerateSessionId();
@@ -136,7 +136,7 @@
          * @return bool True if the user is authenticated.
          */
         public function isAuth( ) {
-            if( parent::getName() == null || parent::getId() == -1 ) {
+            if( $this->getName() == null || $this->getId() == -1 ) {
                 return false;
             } elseif( isset($_SESSION) ) {
                 // Make sure we have all the required session values.

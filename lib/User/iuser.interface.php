@@ -1,5 +1,5 @@
 <?php
-    interface User {
+    interface IUser {
         
         // Handled by DB
         public function getAllCompletedLevels();
@@ -16,7 +16,7 @@
         public function login( $name, $password );
 
         // Handled by sessions / cookie
-        public function auth();    
+        public function auth( );    
         public function isAuth( );
         public function logout( );
     }

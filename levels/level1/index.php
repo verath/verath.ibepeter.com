@@ -1,18 +1,19 @@
 <?php
+    require_once('../../lib/db.php');
     require_once('../../lib/smarty_verath.php');
-    require_once('../../lib/user.class.php');
-    require_once('../../lib/level.class.php');
+    require_once('../../lib/User/sessionUser.class.php');
+    require_once('../../lib/Level/userLevel.class.php');
     
-    $user = new User();
-    $level = new Level(1, $user);
+    $user = new SessionUser( $pdo );
+    $level = new UserLevel(1, $user, $pdo );
 
-    if( !$level->user_has_access() ){
+    if( !$level->userHasAccess() ){
         die('You are not ready. Meet Yoda you must. <a href="/">Home</a>');
     }
 
     function login(){
         global $level;
-         if( $level->check_password($_POST['password']) ){
+         if( $level->checkPassword($_POST['password']) ){
             if( $level->complete() ){
                 header('location: explained.php?completed');
                 die(); 
@@ -29,14 +30,14 @@
        $error = login();
     }
 
-    $userDoneLevel = $level->user_done_level();
-    $levelPass = $level->get_password();
+    $userDoneLevel = $level->userDoneLevel();
+    $levelPass = $level->getPassword();
 
     $smarty = new Smarty_Verath;
-    $smarty->assign('level',  $level->get_level());
-    $smarty->assign('error',  $error);
-    $smarty->assign('userDoneLevel',  $userDoneLevel);
-    $smarty->assign('levelPass',  $levelPass);
+    $smarty->assign('level', $level->getLevelId());
+    $smarty->assign('error', $error);
+    $smarty->assign('userDoneLevel', $userDoneLevel);
+    $smarty->assign('levelPass', $levelPass);
 
     $cache_id = '';
     if($error){

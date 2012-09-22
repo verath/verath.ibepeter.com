@@ -1,7 +1,7 @@
 <?php
-    require_once('user.interface.php');
+    require_once('iuser.interface.php');
 
-    abstract class DatabaseUser implements User {
+    abstract class DatabaseUser implements IUser {
         private $pdo;
         
         private $name;
@@ -251,6 +251,7 @@
 
         /**
          * Un-sets all our fetched data for the current user.
+         *
          */
         public function logout() {
             $this->name         = null;

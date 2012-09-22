@@ -2,7 +2,7 @@
     require_once('../lib/db.php');
     require_once('../lib/User/sessionUser.class.php');
     require_once('../lib/User/userUtil.class.php');
-    require_once('../lib/level.class.php');
+    require_once('../lib/Level/userLevel.class.php');
 
     $user = new SessionUser( $pdo );
 
@@ -14,7 +14,7 @@
         $average_level = UserUtil::getAverageLevel( $pdo );
 
         $levelStatus = array();
-        for( $i=1; $i <= Level::NUM_LEVELS; $i++ ) {
+        for( $i=1; $i <= BasicLevel::NUM_LEVELS; $i++ ) {
             array_push($levelStatus, array(
                 'completed' => $user->hasDoneLevel($i),
                 'id' => $i,
@@ -24,7 +24,7 @@
 
         $smarty->assign('leaderboard_users',  $leaderboard);
         $smarty->assign('average_level', $average_level);
-        $smarty->assign('total_levels', Level::NUM_LEVELS);
+        $smarty->assign('total_levels', BasicLevel::NUM_LEVELS);
         $smarty->assign('levels_status', $levelStatus);
         $smarty->assign('name', $user->getName());
 
@@ -32,6 +32,7 @@
         
     } else {
         $user->logout();
+        header('location: /');
         die();
     }
 ?>
