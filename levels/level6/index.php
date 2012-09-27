@@ -4,42 +4,37 @@
     require_once('../../lib/User/sessionUser.class.php');
     require_once('../../lib/Level/userLevel.class.php');
 
+    
     $user = new SessionUser( $pdo );
     $hints = array( 
-        3  => 'Something you can eat.',
-        7  => 'Cookies!'
+        3  => 'Headers. Again.',
+        6  => 'How does a bot crawl the page witouth signing in?'
     );
     $level = new UserLevel( 6, $user, $pdo, $hints );
     
     if( !$level->userHasAccess() ){
         die('You are not ready. Meet Yoda you must. <a href="/">Home</a>');
     }
-
+    
     function login(){
-        if( !isset($_COOKIE['name']) ) return 'Sorry, but you must be a member to see this page.';
         global $level;
-        if( strtolower($_COOKIE['name']) == 'verath' ){
+        if( strpos( strtolower($_SERVER['HTTP_USER_AGENT']), 'googlebot' ) !== false ){
+            // Google bot need no login...
             if( $level->complete() ){
-                setCookie('name', 'Guest', 0, '/');
                 header('location: explained.php?completed'); 
                 die();
             } else {
                 return 'Database error, please try again later. Sorry for the inconvenience.';
             }
         } else {
-            return 'Sorry, but you must be a member to see this page..';
+            return 'Sorry, but you must logon to see this page.';
         }
     }
     
-    if( !isset($_COOKIE['name']) ){
-        setCookie('name', 'Guest', 0, '/');
-    }
-
     $error = false;
     $error = login();
 
     $level->addTry();
-
 
     $hint = $level->getHints();
     $userDoneLevel = $level->userDoneLevel();
