@@ -1,12 +1,14 @@
 <?php
+    require_once('../../../../lib/db.php');
     require_once('../../../../lib/smarty_verath.php');
-    require_once('../../../../lib/user.class.php');
-    require_once('../../../../lib/level.class.php');
+    require_once('../../../../lib/User/sessionUser.class.php');
+    require_once('../../../../lib/Level/userLevel.class.php');
+
     
-    $user = new User();
-    $level = new Level(4, $user);
+    $user = new SessionUser( $pdo );
+    $level = new UserLevel( 4, $user, $pdo );
     
-    if( !$user->has_access_to_level(3) ){
+    if( !$level->userHasAccess() ){
         die('You are not ready. Meet Yoda you must. <a href="/">Home</a>');
     }
 
@@ -157,5 +159,5 @@ var Base64 = {
 }
 
 function myOnLoad() {
-    eval(Base64.decode('<?php echo base64_encode('real="'.$level->get_password().'";pass=prompt("enter password");if(real!=pass)alert("wrong");else document.location.href="?password='.$level->get_password().'";'); ?>'));
+    eval(Base64.decode('<?php echo base64_encode('real="'.$level->getPassword().'";pass=prompt("enter password");if(real!=pass)alert("wrong");else document.location.href="?password='.$level->getPassword().'";'); ?>'));
 }

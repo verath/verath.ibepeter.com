@@ -1,18 +1,20 @@
 <?php
+    require_once('../../lib/db.php');
     require_once('../../lib/smarty_verath.php');
-    require_once('../../lib/user.class.php');
-    require_once('../../lib/level.class.php');
+    require_once('../../lib/User/sessionUser.class.php');
+    require_once('../../lib/Level/userLevel.class.php');
+
     
-    $user = new User();
-    $level = new Level(7, $user);
+    $user = new SessionUser( $pdo );
+    $level = new UserLevel( 7, $user, $pdo );
     
-    if( !$level->user_has_access() ){
+    if( !$level->userHasAccess() ){
         die('You are not ready. Meet Yoda you must. <a href="/">Home</a>');
     }
     
     function login(){
         global $level;
-        if( $_SESSION['lvl7_user_id'] == '55642' && $level->check_password($_SESSION['lvl7_pin']) ){
+        if( $_SESSION['lvl7_user_id'] == '55642' && $level->checkPassword($_SESSION['lvl7_pin']) ){
             if( $level->complete() ){
                 unset($_SESSION['lvl7_user_id']);
                 unset($_SESSION['lvl7_pin']);
@@ -32,12 +34,12 @@
        $error = login();
     }
 
-    $hint = $level->get_hints();
-    $userDoneLevel = $level->user_done_level();
-    $levelPass = $level->get_password();
+    $hint = $level->getHints();
+    $userDoneLevel = $level->userDoneLevel();
+    $levelPass = $level->getPassword();
 
     $smarty = new Smarty_Verath;
-    $smarty->assign('level',  $level->get_level());
+    $smarty->assign('level',  $level->getLevelId());
     $smarty->assign('hint',  $hint);
     $smarty->assign('error',  $error);
     $smarty->assign('userDoneLevel',  $userDoneLevel);

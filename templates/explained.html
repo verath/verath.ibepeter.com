@@ -81,11 +81,17 @@
         <div id="explanation">
             <h1>Level {$level} - Explained</h1>
             {if $completed}
-                    <div id="success" class="success">Good job, you completed level {$level}. Now, you may read the explanation or skip ahead to the next level.</div>
+                    <div id="success" class="success">Good job, you completed level {$level}! Here is how it works.</div>
             {/if}
             <div class="notice" id="nextLevel">
                 &lt;- <a href="/levels">Return to the Level Index</a>
-                <span id="nextLevelText"><a href="../level{$level +1}">Proceed to Level {$level +1}!</a> -&gt;</span>
+                {if $can_access_next_level nocache}
+                    <span id="nextLevelText">
+                        <a href="../level{$level +1}">
+                            Proceed to Level {$level +1}!
+                        </a> -&gt;
+                    </span>
+                {/if}
             </div>
             <div class="notice" id="explain">
                 <h2>Explanation</h2>

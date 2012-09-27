@@ -1,12 +1,14 @@
 <?php
-    require_once('lib/user.class.php');
-    require_once('lib/level.class.php');
+    require_once('/lib/db.php');
+    require_once('/lib/User/sessionUser.class.php');
+    require_once('/lib/Level/userLevel.class.php');
 
     function handle_comment(){
+        global $pdo;
         $add_to_level = intval($_POST['level']);
         $secret = $_POST['secret'];
         $message = $_POST['message'];
-        $user = new User();
+        $user = new SessionUser( $pdo );
 
         if( isset($_SESSION['spam']) ){
             if( time() < ($_SESSION['spam'] + 10) ) {
@@ -14,17 +16,17 @@
             }
         }
 
-        if($add_to_level < 1 || $add_to_level > Level::$num_levels ){
+        if($add_to_level < 1 || $add_to_level > BasicLevel::NUM_LEVELS ){
             return 'Invalid level.';
         }
 
-        $level = new Level($add_to_level, $user);
+        $level = new UserLevel($add_to_level, $user, $pdo);
 
-        if( $secret !== $level->get_comments_secret() ) {
+        if( $secret !== $level->getCommentsSecret() ) {
             return 'Unable to identify you.';
         }
 
-        if( !$level->user_done_level() ){
+        if( !$level->userDoneLevel() ){
             return 'Not allowed.';
         }
 
@@ -32,7 +34,7 @@
             return 'Message must be between 1 and 300 chars.';
         }
 
-        if( $level->add_comment($message) ){
+        if( $level->addComment($message) ){
             $_SESSION['spam'] = time();
             return false;
         } else {

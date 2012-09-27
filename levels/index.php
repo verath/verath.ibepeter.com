@@ -14,7 +14,11 @@
         $average_level = UserUtil::getAverageLevel( $pdo );
 
         $levelStatus = array();
+        $levelsCompleted = 0;
         for( $i=1; $i <= BasicLevel::NUM_LEVELS; $i++ ) {
+            if($user->hasDoneLevel($i)) {
+                $levelsCompleted ++;
+            }
             array_push($levelStatus, array(
                 'completed' => $user->hasDoneLevel($i),
                 'id' => $i,
@@ -26,6 +30,7 @@
         $smarty->assign('average_level', $average_level);
         $smarty->assign('total_levels', BasicLevel::NUM_LEVELS);
         $smarty->assign('levels_status', $levelStatus);
+        $smarty->assign('levels_completed', $levelsCompleted);
         $smarty->assign('name', $user->getName());
 
         $smarty->display('index_logged_in.html');

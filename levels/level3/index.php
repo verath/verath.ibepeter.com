@@ -1,17 +1,18 @@
 <?php
-    require_once('../../lib/smarty_verath.php');
-    require_once('../../lib/user.class.php');
-    require_once('../../lib/level.class.php');
+   require_once('../../lib/db.php');
+   require_once('../../lib/smarty_verath.php');
+   require_once('../../lib/User/sessionUser.class.php');
+   require_once('../../lib/Level/userLevel.class.php');
 
-    $user = new User();
+    $user = new SessionUser( $pdo );
     $hints = array( 
         3 => 'Headers.', 
         6 => 'The HTTP header you need to change can be hidden in HTML5 with rel="noreferrer".',
         9 => 'One way to change the header is using the addon TamperData for Firefox.'
     );
-    $level = new Level(3, $user, $hints, 'REkaOlQ');
+    $level = new UserLevel( 3, $user, $pdo, $hints, 'REkaOlQ' );
     
-    if( !$level->user_has_access() ){
+    if( !$level->userHasAccess() ){
         die('You are not ready. Meet Yoda you must. <a href="/">Home</a>');
     }
 
@@ -21,7 +22,7 @@
             return 'We only allow logins from http://nonexistentdomain.domain/';
         }
 
-        if( !$level->check_password($_POST['password']) ){
+        if( !$level->checkPassword($_POST['password']) ){
             return 'Wrong password';
         }
 
@@ -38,16 +39,16 @@
         $error = login();
         
         if( !empty($_POST['password']) ){
-            $level->add_try();
+            $level->addTry();
         }
     }
 
-    $hint = $level->get_hints();
-    $userDoneLevel = $level->user_done_level();
-    $levelPass = $level->get_password();
+    $hint = $level->getHints();
+    $userDoneLevel = $level->userDoneLevel();
+    $levelPass = $level->getPassword();
 
     $smarty = new Smarty_Verath;
-    $smarty->assign('level',  $level->get_level());
+    $smarty->assign('level',  $level->getLevelId());
     $smarty->assign('hint',  $hint);
     $smarty->assign('error',  $error);
     $smarty->assign('userDoneLevel',  $userDoneLevel);

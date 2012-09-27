@@ -1,18 +1,20 @@
 <?php
-    require_once('../../lib/user.class.php');
-    require_once('../../lib/level.class.php');
+	require_once('../../lib/db.php');
+    require_once('../../lib/User/sessionUser.class.php');
+    require_once('../../lib/Level/userLevel.class.php');
+
     
-    $user = new User();
-    $level = new Level(7, $user);
+    $user = new SessionUser( $pdo );
+    $level = new UserLevel( 7, $user, $pdo );
     
-    if( !$level->user_has_access() ){
+    if( !$level->userHasAccess() ){
         die('You are not ready. Meet Yoda you must. <a href="/">Home</a>');
     }
 
 	function login(){
         global $level;
         
-        if( $_POST['user_id'] == '55642' && $level->check_password($_POST['pass']) ){
+        if( $_POST['user_id'] == '55642' && $level->checkPassword($_POST['pass']) ){
         	$_SESSION['lvl7_user_id'] = $_POST['user_id'];
 			$_SESSION['lvl7_pin'] = $_POST['pass'];
 			
@@ -38,7 +40,7 @@
 <head>
 	<title>Login</title>
 	<link href="main.css" rel="stylesheet" type="text/css" />
-	<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.3.2/jquery.min.js"></script>
+	<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
 	<script type="text/javascript">
 		$(document).ready(function(){
 			var error = '<?php if( isset($error) && $error ){ echo $error; } ?>';

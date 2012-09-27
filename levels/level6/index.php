@@ -1,19 +1,20 @@
 <?php
+    require_once('../../lib/db.php');
     require_once('../../lib/smarty_verath.php');
-    require_once('../../lib/user.class.php');
-    require_once('../../lib/level.class.php');
-    
-    $user = new User();
+    require_once('../../lib/User/sessionUser.class.php');
+    require_once('../../lib/Level/userLevel.class.php');
+
+    $user = new SessionUser( $pdo );
     $hints = array( 
         3  => 'Something you can eat.',
         7  => 'Cookies!'
     );
-    $level = new Level(6, $user, $hints);
+    $level = new UserLevel( 6, $user, $pdo, $hints );
     
-    if( !$level->user_has_access() ){
+    if( !$level->userHasAccess() ){
         die('You are not ready. Meet Yoda you must. <a href="/">Home</a>');
     }
-    
+
     function login(){
         if( !isset($_COOKIE['name']) ) return 'Sorry, but you must be a member to see this page.';
         global $level;
@@ -37,15 +38,15 @@
     $error = false;
     $error = login();
 
-    $level->add_try();
+    $level->addTry();
 
 
-    $hint = $level->get_hints();
-    $userDoneLevel = $level->user_done_level();
-    $levelPass = $level->get_password();
+    $hint = $level->getHints();
+    $userDoneLevel = $level->userDoneLevel();
+    $levelPass = $level->getPassword();
 
     $smarty = new Smarty_Verath;
-    $smarty->assign('level',  $level->get_level());
+    $smarty->assign('level',  $level->getLevelId());
     $smarty->assign('hint',  $hint);
     $smarty->assign('error',  $error);
     $smarty->assign('userDoneLevel',  $userDoneLevel);

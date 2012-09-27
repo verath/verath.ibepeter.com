@@ -1,11 +1,12 @@
 <?php
-    require_once('../../lib/user.class.php');
-    require_once('../../lib/level.class.php');
+	require_once('../../lib/db.php');
+    require_once('../../lib/User/sessionUser.class.php');
+    require_once('../../lib/Level/userLevel.class.php');
+
+    $user = new SessionUser( $pdo );
+    $level = new UserLevel( 7, $user, $pdo );
     
-    $user = new User();
-    $level = new Level(7, $user);
-    
-    if( !$level->user_has_access() ){
+    if( !$level->userHasAccess() ){
         die('You are not ready. Meet Yoda you must. <a href="/">Home</a>');
     }
 
@@ -15,7 +16,7 @@
 		$regex2 = '#\?ref=.*?"/?>.*?<script.*?src.*?></script>#i';
 
 		if( preg_match($regex, $link) || preg_match($regex2, $link) ){
-			$alert = 'alert("You got one!\ndocument.cookie: user_id=55642; pass='.$level->get_password().'");';
+			$alert = 'alert("You got one!\ndocument.cookie: user_id=55642; pass='.$level->getPassword().'");';
 		} else {
 			$error = 'You can not see submited links if you are not logged in';
 		}
@@ -25,7 +26,7 @@
 <head>
 	<title>Share a link</title>
 	<link href="main.css" rel="stylesheet" type="text/css" />
-	<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.3.2/jquery.min.js"></script>
+	<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
 	<script type="text/javascript">
 		$(document).ready(function(){
 			var error = '<?php if(isset($error)){ echo $error; } ?>';
