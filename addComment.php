@@ -1,7 +1,7 @@
 <?php
-    require_once('/lib/db.php');
-    require_once('/lib/User/sessionUser.class.php');
-    require_once('/lib/Level/userLevel.class.php');
+    require_once('lib/db.php');
+    require_once('lib/User/sessionUser.class.php');
+    require_once('lib/Level/userLevel.class.php');
 
     function handle_comment(){
         global $pdo;

@@ -14,7 +14,7 @@
             $sql = 'SELECT COUNT(`level`) AS `level`, `username` 
                     FROM `level_stats_completion` 
                     GROUP BY `username` 
-                    ORDER BY COUNT(`level`) DESC 
+                    ORDER BY COUNT(`level`) DESC, `username`
                     LIMIT :numResults';
 
             $stmt = $pdo->prepare( $sql );
