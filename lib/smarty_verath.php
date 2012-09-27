@@ -11,12 +11,12 @@
 
             if( IS_PRODUCTION ){
                 $this->setTemplateDir(array(
-                    'main' => Sensitive::$smarty_prod_data_dir . '/templates',
-                    'levels' => Sensitive::$smarty_prod_data_dir . '/templates/levels'
+                    'main' => Sensitive::$SMARTY_PROD_DATA_DIR . '/templates',
+                    'levels' => Sensitive::$SMARTY_PROD_DATA_DIR . '/templates/levels'
                 ));
-                $this->setConfigDir(Sensitive::$smarty_prod_data_dir . '/config');
-                $this->setCompileDir(Sensitive::$smarty_prod_data_dir . '/templates_c');
-                $this->setCacheDir(Sensitive::$smarty_prod_data_dir . '/cache');
+                $this->setConfigDir(Sensitive::$SMARTY_PROD_DATA_DIR . '/config');
+                $this->setCompileDir(Sensitive::$SMARTY_PROD_DATA_DIR . '/templates_c');
+                $this->setCacheDir(Sensitive::$SMARTY_PROD_DATA_DIR . '/cache');
 
                 $this->caching = Smarty::CACHING_OFF;
                 $this->force_compile = false;

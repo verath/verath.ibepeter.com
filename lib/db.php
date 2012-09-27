@@ -5,9 +5,9 @@
     global $pdo;
 
     if( IS_PRODUCTION ){
-        $dsn = Sensitive::$db_prod_dsn;
-        $user = Sensitive::$db_prod_user;
-        $password = Sensitive::$db_prod_password;
+        $dsn = Sensitive::$DB_PROD_DSN;
+        $user = Sensitive::$DB_PROD_USER;
+        $password = Sensitive::$DB_PROD_PASSWORD;
     } else {
         $dsn = 'mysql:dbname=verath.ibepeter.com;host=localhost';
         $user = 'root';
