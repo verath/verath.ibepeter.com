@@ -33,6 +33,13 @@
 
                 $this->caching = Smarty::CACHING_OFF;
             }
+
+            
+            if( !IS_PRODUCTION && SHOW_DEBUG ){
+                //$this->debugging = true;
+            } else {
+                $this->debugging = false;
+            }
             
             $this->assign('app_name', 'Verath');
         }
