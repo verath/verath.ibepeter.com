@@ -1,18 +1,41 @@
 <?php
     require_once('iuser.interface.php');
-
+	
+    /**
+     * An abstract class implementing the database parts of the IUser interface.
+     * @author Peter
+     *
+     */
     abstract class DatabaseUser implements IUser {
-        private $pdo;
+        /**
+         * A PDO instance to be used in db queries
+         * @var PDO
+         */
+    	private $pdo;
         
+    	/**
+    	 * The name of the user
+    	 * @var string
+    	 */
         private $name;
+        
+        /**
+         * The user's database id
+         * @var int
+         */
         private $id;
+        
+        /**
+         * An array of levels the user has completed
+         * @var array
+         */
         private $levels_done;
 
         /** 
          * DatabaseUser constructor. Sets default values and
          * the pdo instance to use.
          * 
-         * @param PDO $pdo The PDO instance to use for DB queries.
+         * @param PDO $pdo The PDO instance to use for DB queries
          */
         public function __construct( $pdo ){
             if( get_class($pdo) != "PDO" ) {
@@ -51,7 +74,7 @@
          * Quieries the database for all levels the user
          * has completed already.
          *
-         * @return bool true if the value could be fetched.
+         * @return bool True if the value could be fetched or false on failure.
          */
         private function fetchCompletedLevels(){
             if( $this->name == null ){ return false; }
@@ -74,10 +97,11 @@
         }
 
         /**
-         * Fetches info about the user from the DB.
+         * Fetches and stores info about the user from the DB.
          *
-         * @param int $userId The id of the user.
-         * @return bool True if the user could be fetched.
+         * @param int $userId The id of the user to be fetched
+         * @return bool True if the user could be fetched or false on failure
+         * @throws InvalidArgumentException
          */
         protected function fetchFromDB( $userId ) {
             if( !filter_var($userId, FILTER_VALIDATE_INT) ){
@@ -106,8 +130,8 @@
         /**
          * Gets all the levels the user has completed.
          *
-         * @return array Empty if no levels has been completed, 
-         *               or if none could be fetched.
+         * @return array Array of completed levels or empty if no levels has 
+         * 						been completed, or if none could be fetched.
          */
         public function getAllCompletedLevels() {
             if( !is_array($this->levels_done) && !$this->fetchCompletedLevels() ) {
@@ -118,10 +142,10 @@
         }
 
         /**
-         * Tests if a user has done a level.
+         * Tests if a user has done a level
          * 
          * @param int $levelId The id of the level.
-         * @return bool
+         * @return bool True if the level has been completed or false if not
          */
         public function hasDoneLevel( $levelId ) {
             if( !is_array($this->levels_done) && !$this->fetchCompletedLevels() ) {
@@ -132,7 +156,7 @@
         }
 
         /**
-         * Tests if a user has access to a level.
+         * Tests if a user has access to a level
          * 
          * The test is done by looking at the number
          * of completed levels the user has. Every
@@ -140,7 +164,7 @@
          * 0-1 => access to 1-3, 2-3 => access to 1-5...
          * 
          * @param int $levelId The id of the level.
-         * @return bool
+         * @return bool True if user has access or false if not or failure
          */
         public function hasAccessToLevel( $levelId ){
             if( !is_array($this->levels_done) && !$this->fetchCompletedLevels() ){
@@ -151,12 +175,10 @@
         }
 
         /**
-         * Completes a level for a user. Returns true
-         * if it was added successfully or if the user
-         * had already completed the level.
+         * Completes a level for a user.
          * 
-         * @param int $levelId The id of the level.
-         * @return bool True if completion was successful, else false.
+         * @param int $levelId The id of the level to complete
+         * @return bool True if completion was successful or false on failure
          */
         public function completeLevel( $levelId ){
             if( $this->name == null ){
@@ -186,7 +208,7 @@
          *
          * @param string $name
          * @param string $password 
-         * @return bool true on success.
+         * @return bool true on success or false on failure.
          */
         public function register( $name, $password ){
             $password = $this->getPasswordHash($name, $password);
@@ -202,18 +224,18 @@
         }
 
         /**
-         * Getter for the name of the user.
+         * Getter for the name of the user
          * 
-         * @return string
+         * @return string The name of the user
          */
         public function getName() {
             return $this->name;
         }
 
         /**
-         * Getter for the id of the user.
+         * Getter for the id of the user
          *
-         * @return string
+         * @return string The ID assosiated with the user in the DB
          */
         public function getId() {
             return $this->id;
@@ -221,11 +243,11 @@
 
         /**
          * Attempts to log the user in using the provided
-         * username and password.
+         * username and password
          * 
          * @param string $name
          * @param string $password
-         * @return bool False on error, else true.
+         * @return bool True on success, or false on failure.
          */
         public function login( $name, $password ) {
             $pass = $password;
@@ -250,7 +272,7 @@
         }
 
         /**
-         * Un-sets all our fetched data for the current user.
+         * Un-sets all our fetched data for the current user
          *
          */
         public function logout() {
