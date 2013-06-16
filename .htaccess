@@ -1,4 +1,10 @@
 # ----------------------------------------------------------------------
+# Redirect /verath to verath.ibepeter.com
+# ----------------------------------------------------------------------
+Redirect /verath http://verath.ibepeter.com/
+
+
+# ----------------------------------------------------------------------
 # Proper MIME type for all files
 # ----------------------------------------------------------------------
 
@@ -48,11 +54,9 @@ ErrorDocument 500 /errors/500/index.php
 # is your directory.
 
 <IfModule mod_rewrite.c>
-  Options +FollowSymlinks
   RewriteEngine On
 # RewriteBase /
 </IfModule>
-
 
 # ----------------------------------------------------------------------
 # Suppress or force the "www." at the beginning of URLs
@@ -103,8 +107,3 @@ AddCharset ISO-8859-1 .atom .css .js .json .rss .vtt .xml .css
   Deny from all
   Satisfy All
 </FilesMatch>
-
-php_flag register_globals Off
-
-# Rename session cookie to something else, than PHPSESSID
-php_value session.name sid
